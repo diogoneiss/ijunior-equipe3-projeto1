@@ -31,3 +31,5 @@ const listaDeMusicas = [
     quantidadeDownloads: 18000,
     }
 ]
+
+module.exports=listaDeMusicas;
