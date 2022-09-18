@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+//CONTROLLER NAO FUNCIONAL POIS O MODELO ATUAL DE MUSICA NAO EH UM ARRAY
+
 // optei por deixar mutável para conseguir usar funções de ordem superior, como filter
 let Musica = require('../models/Musica');
 

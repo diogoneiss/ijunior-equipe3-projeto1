@@ -1,3 +1,32 @@
+const sequelize = require('../../../../database/index');
+const { DataTypes } = require('sequelize');
+const Artista = require('../../artistas/models/Artista');
+
+
+const Musica = sequelize.define('Musica', {
+	id: {
+		type: DataTypes.INTEGER,
+		primaryKey: true,
+		autoIncrement: true,
+		allowNull: false
+	},
+	foto: {
+		type: DataTypes.STRING,
+		allowNull: false,
+	},
+	titulo: {
+		type: DataTypes.STRING,
+		allowNull: false
+	},
+	categoria: {
+		type: DataTypes.STRING,
+		allowNull: false
+	},
+	//artistaID
+});
+
+//todo linkar modelo e array
+
 // Ex: listaDeMusicas[0].nome retorna o nome da primeira música
 const listaDeMusicas = [
 	{
@@ -32,4 +61,17 @@ const listaDeMusicas = [
 	}
 ];
 
-module.exports = listaDeMusicas;
+Musica.belongsTo(Artista, {
+	constraint: true,
+	foreignKey: 'ArtistaID',
+
+});
+
+Musica.sync({ force: false, alter: true }).then(() => {
+	console.log('a tabela de musicas foi (re)criada');
+})
+	.catch((error) => {
+		console.log(error);
+	});
+
+module.exports = Musica;
