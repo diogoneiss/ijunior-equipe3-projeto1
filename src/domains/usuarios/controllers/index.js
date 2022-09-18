@@ -15,4 +15,4 @@ router.post('/', async(req,res)=>{
 	}
 });
 
-module.exports = Usuario;
+module.exports = router;

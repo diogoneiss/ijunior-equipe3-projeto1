@@ -3,4 +3,4 @@ const Artista = require('../models/Artista');
 
 
 
-module.exports= Artista;
+module.exports = Artista;
