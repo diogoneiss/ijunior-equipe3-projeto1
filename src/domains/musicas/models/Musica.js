@@ -67,6 +67,10 @@ Musica.belongsTo(Artista, {
 
 });
 
+Artista.hasMany(Musica,{
+	foreignKey: 'ArtistaID'
+});
+
 Musica.sync({ force: false, alter: true }).then(() => {
 	console.log('a tabela de musicas foi (re)criada');
 })

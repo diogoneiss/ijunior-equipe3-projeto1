@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const MusicaService = require('../service/MusicaService');
 
 //CONTROLLER NAO FUNCIONAL POIS O MODELO ATUAL DE MUSICA NAO EH UM ARRAY
 
@@ -19,17 +20,17 @@ router.get('/', (req, res) => {
 
 
 //Adiciona uma musica
-router.post('/', (req, res) => {
+router.post('/', async(req, res) => {
 	try {
 		newMusica = {
-			nome: req.body.nome || '',
-			artista: req.body.artista || '',
-			genero: req.body.genero || '',
-			quantidadeDownloads: req.body.quantidadeDownloads || 0.
+			titulo: req.body.nome || '',
+			foto: req.body.foto || '',
+			categoria: req.body.categoria || '',
+			artistaID: req.body.artistaID || 0.
 		};
 
-		Musica.push(newMusica);
-		res.status(200).send();
+		await MusicaService.criacao(newMusica);
+		res.status(200).json('musica adicionada com sucesso!');
 	}
 	catch (e) {
 		res.status(500).send(e.message);
