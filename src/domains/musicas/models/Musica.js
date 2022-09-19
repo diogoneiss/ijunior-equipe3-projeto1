@@ -1,6 +1,7 @@
 const sequelize = require('../../../../database/index');
 const { DataTypes } = require('sequelize');
 const Artista = require('../../artistas/models/Artista');
+const Usuario = require('../../usuarios/models/Usuario');
 
 
 const Musica = sequelize.define('Musica', {
@@ -61,6 +62,9 @@ const listaDeMusicas = [
 	}
 ];
 
+
+//relacionamento 1:N entre artista e musica
+//uma musica tem UM artista e um artista tem N musicas
 Musica.belongsTo(Artista, {
 	constraint: true,
 	foreignKey: 'ArtistaID',
@@ -69,6 +73,14 @@ Musica.belongsTo(Artista, {
 
 Artista.hasMany(Musica,{
 	foreignKey: 'ArtistaID'
+});
+
+Musica.belongsToMany(Usuario,{
+	through: 'MusicaUsuario'
+});
+
+Usuario.belongsToMany(Musica,{
+	through: 'MusicaUsuario'
 });
 
 Musica.sync({ force: false, alter: true }).then(() => {
