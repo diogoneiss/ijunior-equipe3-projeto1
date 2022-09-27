@@ -8,7 +8,7 @@ const Artista = sequelize.define('Artista', {
 		autoIncrement: true,
 		allowNull: false
 	},
-	name: {
+	nome: {
 		type: DataTypes.STRING,
 		allowNull: false,
 	},

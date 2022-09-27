@@ -23,8 +23,25 @@ router.post('/', async (req, res) => {
 	}
 });
 
-router.put('/', async (req, res) => {
-	//todo
+router.put('/:id',async (req, res) => {
+	const id=req?.params.id;
+	const usuarioUpdate=req?.body;
+	try {
+		await UsuarioService.alteracao(usuarioUpdate, id);
+		res.status(201).send('Usuario alterado com sucesso');
+	} catch (error) {
+		res.status(404).send(error.message);
+	}
+});
+
+router.delete('/:id',async (req, res) => {
+	const id=req?.params.id;
+	try {
+		await UsuarioService.delecao(id);
+		res.status(201).send('Usuario deletado com sucesso!');
+	} catch (error) {
+		res.status(404).send(error.message);
+	}
 });
 
 module.exports = router;
