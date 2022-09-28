@@ -16,5 +16,15 @@ app.use('/api/usuarios',usuarioRouter);
 const artistaRouter = require('../src/domains/artistas/controllers/index');
 app.use('/api/artistas',artistaRouter);
 
+//todo: separar na pasta correta dos middlewares
+function errorHandler(error,req,res,next){
+	if(error.message=='O usuario selecionado nao existe'){
+		res.sendStatus(404);
+	}
+    res.sendStatus(500);
+}
+
+app.use(errorHandler);
+
 
 module.exports = app;
