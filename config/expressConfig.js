@@ -1,6 +1,10 @@
 const express = require('express');
+const errorHandler=require('../src/middlewares/errorHandler');
 
 const app = express();
+
+const cookieParser=require('cookie-parser');
+app.use(cookieParser());
 
 app.use(express.json());
 app.use(express.urlencoded({
@@ -15,14 +19,6 @@ app.use('/api/usuarios',usuarioRouter);
 
 const artistaRouter = require('../src/domains/artistas/controllers/index');
 app.use('/api/artistas',artistaRouter);
-
-//todo: separar na pasta correta dos middlewares
-function errorHandler(error,req,res,next){
-	if(error.message=='O usuario selecionado nao existe'){
-		res.sendStatus(404);
-	}
-    res.sendStatus(500);
-}
 
 app.use(errorHandler);
 
