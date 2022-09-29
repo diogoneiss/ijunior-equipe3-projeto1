@@ -1,9 +1,15 @@
 const Usuario = require('../models/Usuario');
 
 class UsuarioService {
+	//cria um usuario com base no body recebido
 	async criacao(usuario) {
+		const user=await findOne({where: (email=usuario.email)});
+		if(user){
+			throw new Error('Email ja cadastrado');
+		}
 		await Usuario.create(usuario);
 	}
+	//retorna todos os usuarios
 	async listarTodos() {
 		return await Usuario.findAll();
 	}

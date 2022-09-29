@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const Usuario = require('../models/Usuario');
 const UsuarioService = require('../service/UsuarioService');
+const checkRole=require('../../../middlewares/checkRole');
+
 
 router.get('/', async (req, res, next) => {
 	try {
@@ -23,7 +25,8 @@ router.post('/', async (req, res, next) => {
 	}
 });
 
-router.put('/:id',async (req, res, next) => {
+//todo: implementar checkrole
+router.put('/:id', async (req, res, next) => {
 	const id=req?.params.id;
 	const usuarioUpdate=req?.body;
 	try {
@@ -34,6 +37,7 @@ router.put('/:id',async (req, res, next) => {
 	}
 });
 
+//todo: implementar checkRole
 router.delete('/:id',async (req, res, next) => {
 	const id=req?.params.id;
 	try {
