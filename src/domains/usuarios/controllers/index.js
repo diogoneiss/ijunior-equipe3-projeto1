@@ -3,6 +3,7 @@ const Usuario = require('../models/Usuario');
 const UsuarioService = require('../service/UsuarioService');
 const checkRole=require('../../../middlewares/checkRole');
 
+//todo: login middleware
 
 router.get('/', async (req, res, next) => {
 	try {
