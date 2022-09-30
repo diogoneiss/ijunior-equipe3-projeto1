@@ -1,3 +1,4 @@
+const InvalidParametersError = require('../../../../errors/InvalidParametersError');
 const Usuario = require('../models/Usuario');
 
 class UsuarioService {
@@ -5,20 +6,23 @@ class UsuarioService {
 	async criacao(usuario) {
 		const user=await findOne({where: (email=usuario.email)});
 		if(user){
-			throw new Error('Email ja cadastrado');
+			throw new InvalidParametersError('Email ja cadastrado');
 		}
 		await Usuario.create(usuario);
 	}
+
 	//retorna todos os usuarios
 	async listarTodos() {
 		return await Usuario.findAll();
 	}
+
+	
 	//altera uma musica usando como chave principal a propria PK
 	async alteracao(update, id){
 		const usuarioOriginal = await Usuario.findByPk(id);
 		//checa se a key enviada existe
 		if (usuarioOriginal === null) {
-			throw new Error('O usuario enviado nao existe');
+			throw new InvalidParametersError(`O usuario com a id ${id} nao existe`);
 		}
 
 		//atualiza os campos do usuario selecionado e os salva
@@ -29,11 +33,14 @@ class UsuarioService {
 
 		await usuarioOriginal.save();
 	}
+
+
+	//deleta um usuario com base na sua PK
 	async delecao(id){
 		const usuario = await Usuario.findByPk(id);
 		//checa se a key enviada existe
 		if (usuario === null) {
-			throw new Error('O usuario selecionado nao existe');
+			throw new InvalidParametersError(`O usuario com a id ${id} nao existe`);
 		}
 		await usuario.destroy();
 	}

@@ -1,8 +1,8 @@
-class InvalidParametersError extends error{
-    constructor(msg){
-        super(msg);
-        this.name='InvalidParametersError';
-    }
+class InvalidParametersError extends Error{
+	constructor(msg){
+		super(msg);
+		this.name='InvalidParametersError';
+	}
 }
 
 module.exports=InvalidParametersError;

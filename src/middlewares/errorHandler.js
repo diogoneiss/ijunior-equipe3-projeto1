@@ -10,10 +10,10 @@ function errorHandler(error,req,res,next){
 		code=403;
 	}
 	if(error instanceof InvalidParametersError){
-		//code=??
+		code=400;
 	}
 	if(error instanceof InvalidRouteError){
-		//code=??
+		code=404;
 	}
 	res.status(code).json(message);
 

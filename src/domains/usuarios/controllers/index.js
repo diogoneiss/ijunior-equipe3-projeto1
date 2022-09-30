@@ -8,7 +8,7 @@ const checkRole=require('../../../middlewares/checkRole');
 router.get('/', async (req, res, next) => {
 	try {
 		const allUsers = await UsuarioService.listarTodos();
-		return res.status(201).send(allUsers);
+		res.status(201).send(allUsers);
 	} catch (error) {
 		next(error);
 	}
@@ -20,7 +20,7 @@ router.post('/', async (req, res, next) => {
 	const body = req.body;
 	try {
 		await UsuarioService.criacao(body);
-		return res.status(201).json('Usuario criado com sucesso!');
+		res.status(201).json('Usuario criado com sucesso!');
 	} catch (error) {
 		next(error);
 	}
