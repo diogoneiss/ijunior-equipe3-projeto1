@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const MusicaService = require('../service/MusicaService');
 const Musica = require('../models/Musica');
+const authMiddleware=require('../../../middlewares/authMiddlewares');
 
 //Envia a lista de musicas
 router.get('/', async (req, res, next) => {
@@ -16,7 +17,7 @@ router.get('/', async (req, res, next) => {
 
 
 //Adiciona uma musica
-router.post('/', async(req, res, next) => {
+router.post('/', authMiddleware, async(req, res, next) => {
 	try {
 		let newMusica = {
 			titulo: req?.body.titulo || '',
@@ -36,7 +37,7 @@ router.post('/', async(req, res, next) => {
 });
 
 //Remove uma musica usando como chave principal seu id
-router.delete('/:id', async(req, res, next) => {
+router.delete('/:id', authMiddleware, async(req, res, next) => {
 	try {
 		const id=req?.params.id;
 		await MusicaService.delecao(id);
@@ -47,7 +48,7 @@ router.delete('/:id', async(req, res, next) => {
 });
 
 //Altera uma musica, usando como chave principal seu id
-router.put('/:id', async(req, res, next) => {
+router.put('/:id', authMiddleware, async(req, res, next) => {
 	try {
 		const updateMusica=req?.body;
 		const id=req?.params.id;

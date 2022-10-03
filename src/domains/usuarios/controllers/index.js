@@ -1,11 +1,11 @@
 const router = require('express').Router();
 const Usuario = require('../models/Usuario');
 const UsuarioService = require('../service/UsuarioService');
-const checkRole=require('../../../middlewares/checkRole');
+const authMiddleware=require('../../../middlewares/authMiddlewares');
 
 //todo: login middleware
 
-router.get('/', async (req, res, next) => {
+router.get('/', authMiddleware, async (req, res, next) => {
 	try {
 		const allUsers = await UsuarioService.listarTodos();
 		res.status(201).send(allUsers);
@@ -16,7 +16,7 @@ router.get('/', async (req, res, next) => {
 
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', authMiddleware, async (req, res, next) => {
 	const body = req.body;
 	try {
 		await UsuarioService.criacao(body);
@@ -26,8 +26,8 @@ router.post('/', async (req, res, next) => {
 	}
 });
 
-//todo: implementar checkrole
-router.put('/:id', async (req, res, next) => {
+
+router.put('/:id', authMiddleware, async (req, res, next) => {
 	const id=req?.params.id;
 	const usuarioUpdate=req?.body;
 	try {
@@ -38,8 +38,8 @@ router.put('/:id', async (req, res, next) => {
 	}
 });
 
-//todo: implementar checkRole
-router.delete('/:id',async (req, res, next) => {
+
+router.delete('/:id', authMiddleware, async (req, res, next) => {
 	const id=req?.params.id;
 	try {
 		await UsuarioService.delecao(id);
