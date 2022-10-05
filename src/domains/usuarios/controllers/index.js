@@ -1,9 +1,14 @@
 const router = require('express').Router();
 const Usuario = require('../models/Usuario');
 const UsuarioService = require('../service/UsuarioService');
-const authMiddleware=require('../../../middlewares/authMiddlewares');
+const {authMiddleware, 
+	notLoggedIn, 
+	loginMiddleware}=require('../../../middlewares/authMiddlewares');
+const checkRole=require('../../../middlewares/checkRole');
 
-//todo: login middleware
+router.post('/login',notLoggedIn, loginMiddleware);
+//todo: logoutmiddleware
+// router.post('/logout',logoutMiddleware);
 
 router.get('/', authMiddleware, async (req, res, next) => {
 	try {
@@ -16,7 +21,8 @@ router.get('/', authMiddleware, async (req, res, next) => {
 
 });
 
-router.post('/', authMiddleware, async (req, res, next) => {
+//rota de criacao de usuarios nao eh protegida pelo authMiddleware pois todos podem criar uma conta
+router.post('/', async (req, res, next) => {
 	const body = req.body;
 	try {
 		await UsuarioService.criacao(body);

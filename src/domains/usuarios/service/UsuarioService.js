@@ -58,8 +58,15 @@ class UsuarioService {
 		//atualiza os campos do usuario selecionado e os salva
 		usuarioOriginal.nome=update?.nome || usuarioOriginal?.nome|| '';
 		usuarioOriginal.email= update?.email || usuarioOriginal?.email || '';
-		usuarioOriginal.senha=update?.senha || usuarioOriginal?.senha || '';
 		usuarioOriginal.cargo=update?.cargo|| usuarioOriginal?.cargo || '';
+
+		if(update.senha){
+			const senhasIguais = await bcrypt.compare(update.senha,usuarioOriginal.senha);
+			if(senhasIguais){
+				throw new InvalidParametersError('Sua nova senha nao pode ser identica a anterior!');
+			}
+			update.senha= await this.criptografarSenha(update.senha);
+		}
 
 		await usuarioOriginal.save();
 	}
