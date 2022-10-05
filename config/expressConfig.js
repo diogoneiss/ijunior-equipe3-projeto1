@@ -1,8 +1,15 @@
 const express = require('express');
 const errorHandler=require('../src/middlewares/errorHandler');
 const swaggerUi = require('swagger-ui-express');
+require ('dotenv').config();
 
 const app = express();
+
+const cors = require('cors');
+app.use(cors({
+	origin: process.env.CLIENT_URL,
+	credentials: true
+}));
 
 const cookieParser=require('cookie-parser');
 app.use(cookieParser());
