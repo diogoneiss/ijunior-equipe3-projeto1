@@ -33,7 +33,7 @@ router.post('/', async (req, res, next) => {
 });
 
 
-router.put('/:id', authMiddleware, async (req, res, next) => {
+router.put('/:id', authMiddleware, checkRole, async (req, res, next) => {
 	const id=req?.params.id;
 	const usuarioUpdate=req?.body;
 	try {

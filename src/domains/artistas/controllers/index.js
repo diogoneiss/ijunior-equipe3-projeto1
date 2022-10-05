@@ -1,7 +1,10 @@
 const router = require('express').Router();
 const Artista = require('../models/Artista');
 const ArtistaService=require('../services/artistaService');
-const authMiddleware=require('../../../middlewares/authMiddlewares');
+const {authMiddleware, 
+	notLoggedIn,
+	loginMiddleware}=require('../../../middlewares/authMiddlewares');
+const checkRole = require('../../../middlewares/checkRole');
 
 router.get('/', async(req, res, next) => {
 	try {

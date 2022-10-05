@@ -48,11 +48,15 @@ class UsuarioService {
 
 	
 	//altera uma musica usando como chave principal a propria PK
-	async alteracao(update, id){
+	async alteracao(update, id, loggedUser){
 		const usuarioOriginal = await Usuario.findByPk(id);
 		//checa se a key enviada existe
 		if (usuarioOriginal === null) {
 			throw new InvalidParametersError(`O usuario com a id ${id} nao existe`);
+		}
+
+		if(loggedUser.cargo!=userRoles.admin && update.id!=loggedUser.id){
+			throw new InvalidParametersError('Voce so pode alterar as informacoes de seu usuario');
 		}
 
 		//atualiza os campos do usuario selecionado e os salva

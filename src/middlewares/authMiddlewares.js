@@ -12,7 +12,7 @@ function authMiddleware (req,res,next){
 		const token = (req) =>{
 			if(req && req.cookies){
 				return req.cookies['jwt'];
-			}
+			} 
 		};
 
 		if(token){
@@ -21,6 +21,7 @@ function authMiddleware (req,res,next){
 		}else{
 			throw new NotAuthorizedError('Voce precisa estar logado para realizar essa acao!');
 		}
+		next();
 
 	} catch (error) {
 		next(error);
@@ -68,12 +69,14 @@ async function loginMiddleware(req, res, next){
 
 		generateJWT(user, res);
 
+		next();
+
 	} catch (error) {
 		next(error);
 	}
 }
 
-async function notLoggedIn(){
+async function notLoggedIn(req, res, next){
 	const token=req.cookies['jwt'];
 	if(token){
 		throw new NotAuthorizedError('Voce ja esta logado no sistema!');

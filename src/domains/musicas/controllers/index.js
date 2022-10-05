@@ -2,7 +2,11 @@ const express = require('express');
 const router = express.Router();
 const MusicaService = require('../service/MusicaService');
 const Musica = require('../models/Musica');
-const authMiddleware=require('../../../middlewares/authMiddlewares');
+const {authMiddleware, 
+		notLoggedIn,
+		loginMiddleware}=require('../../../middlewares/authMiddlewares');
+const checkRole = require('../../../middlewares/checkRole');
+
 
 //Envia a lista de musicas
 router.get('/', async (req, res, next) => {
@@ -13,8 +17,6 @@ router.get('/', async (req, res, next) => {
 		next(error);
 	}
 });
-
-
 
 //Adiciona uma musica
 router.post('/', authMiddleware, async(req, res, next) => {
