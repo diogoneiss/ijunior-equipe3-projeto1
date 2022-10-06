@@ -3,12 +3,12 @@ const Usuario = require('../models/Usuario');
 const UsuarioService = require('../service/UsuarioService');
 const {authMiddleware, 
 	notLoggedIn, 
-	loginMiddleware}=require('../../../middlewares/authMiddlewares');
+	loginMiddleware,
+	logoutMiddleware}=require('../../../middlewares/authMiddlewares');
 const checkRole=require('../../../middlewares/checkRole');
 
 router.post('/login',notLoggedIn, loginMiddleware);
-//todo: logoutmiddleware
-// router.post('/logout',logoutMiddleware);
+router.post('/logout',logoutMiddleware);
 
 router.get('/', authMiddleware, async (req, res, next) => {
 	try {

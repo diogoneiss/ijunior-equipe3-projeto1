@@ -4,51 +4,50 @@ const jwt = require('jsonwebtoken');
 const bcrypt= require('bcrypt');
 const NotAuthorizedError = require('../../errors/NotAuthorizedError');
 const Usuario = require('../domains/usuarios/models/Usuario');
-// const checkRole=require('./checkRole');
 
 
 function authMiddleware (req,res,next){
 	try {
-		const token = (req) =>{
-			if(req && req.cookies){
+		//extrai o cookie da requisicao e o salva em token
+		const cookieExtractor = (req) => {
+			if(req){
 				return req.cookies['jwt'];
-			} 
+			}
 		};
 
+		const token=cookieExtractor(req);
+
+		//caso haja o cookie, salvar suas informacoes na requisicao e next()
 		if(token){
-			jwt.verify(token, process.env.SECRET_KEY,(err,decoded)=>{
-				if(err){
-					throw new NotAuthorizedError('Voce precisa estar logado para realizar essa acao!');
-				}
-				req.user = decoded.user;
-			});
+			const decoded=jwt.verify(token, process.env.SECRET_KEY);
+			req.user = decoded.user;
+		};
+
+		//caso nao haja o cookie, o usuario nao esta logado no sistema
+		if(!req.user){
+			throw new NotAuthorizedError('Voce precisa estar logado para realizar essa acao!');
 		}
 		next();
 
 	} catch (error) {
 		next(error);
 	}
-
-	//  o ideal seria fazer tudo de auth aqui, sem o checkRole, mas como ele está na especificação vou deixar
-	// req.user={cargo:'admin'};
-	// checkRole(req,res,next);
 }
 
 async function loginMiddleware(req, res, next){
 	try {
-		const user=Usuario.findOne({where: {email: req.body.email}});
+		const user= await Usuario.findOne({where: {email: req.body.email}});
 		if(!user){
 			throw new NotAuthorizedError('Email e/ou senha incorretos!');
 		} else{
-			bcrypt.compare(req.body.senha, user.senha, (err, result)=>{
-				if(err){
-					throw new NotAuthorizedError('Email e/ou senha incorretos! 2');
-				}
-				generateJWT(user, res);
-			});
-		}
+			const comparaSenha = await bcrypt.compare(req.body.senha, user.senha);
+			if(!comparaSenha){
+				throw new NotAuthorizedError('Email e/ou senha incorretos! 2');
+			}
+			generateJWT(user, res);
+		};
 		
-
+	
 		next();
 
 	} catch (error) {
@@ -81,11 +80,27 @@ function generateJWT(user, res){
 
 async function notLoggedIn(req, res, next){
 	const token=req.cookies['jwt'];
-	if(token){
-		throw new NotAuthorizedError('Voce ja esta logado no sistema!');
-	}else{
+	try{
+		if(token){
+			throw new NotAuthorizedError('Voce ja esta logado no sistema!');
+		}
 		next();
+	}catch(error){
+		next(error);
 	}
 }
 
-module.exports={authMiddleware, notLoggedIn, loginMiddleware};
+async function logoutMiddleware(req, res, next){
+	const token=req.cookies['jwt'];
+	try {
+		if(!token){
+			throw new NotAuthorizedError('Voce nao esta logado no sistema!');
+		}
+		res.status(202).clearCookie('jwt').send('logout bem sucedido!');
+
+	} catch (error) {
+		next(error);
+	}
+}
+
+module.exports={authMiddleware, notLoggedIn, loginMiddleware, logoutMiddleware};

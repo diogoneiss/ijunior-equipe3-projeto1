@@ -55,7 +55,8 @@ class UsuarioService {
 			throw new InvalidParametersError(`O usuario com a id ${id} nao existe`);
 		}
 
-		if(loggedUser.cargo!=userRoles.admin && update.id!=loggedUser.id){
+		//um usuario pode alterar apenas as informacoes de seu proprio campo
+		if(loggedUser.cargo!=userRoles.admin && id!=loggedUser.id){
 			throw new InvalidParametersError('Voce so pode alterar as informacoes de seu usuario');
 		}
 
@@ -64,19 +65,14 @@ class UsuarioService {
 		usuarioOriginal.email= update?.email || usuarioOriginal?.email || '';
 		usuarioOriginal.cargo=update?.cargo|| usuarioOriginal?.cargo || '';
 
+		//testa se a senha nova bate eh diferente da anterior
 		if(update.senha){
-			// const senhasIguais = await bcrypt.compare(update.senha,usuarioOriginal.senha);
-			// if(senhasIguais){
-			// 	throw new InvalidParametersError('Sua nova senha nao pode ser identica a anterior!');
-			// }
-			// update.senha= await this.criptografarSenha(update.senha);
+			const senhasIguais = await bcrypt.compare(update.senha,usuarioOriginal.senha);
+			if(senhasIguais){
+				throw new InvalidParametersError('Sua nova senha nao pode ser identica a anterior!');
+			}
+			update.senha= await this.criptografarSenha(update.senha);
 
-			bcrypt.compare(update.senha,usuarioOriginal.senha,async (err,result)=>{
-				if(err){
-					throw new InvalidParametersError('Sua nova senha nao pode ser identica a anterior!');
-				}
-				update.senha= await this.criptografarSenha(update.senha);
-			});
 		}
 
 		await usuarioOriginal.save();
