@@ -65,11 +65,19 @@ class UsuarioService {
 		usuarioOriginal.cargo=update?.cargo|| usuarioOriginal?.cargo || '';
 
 		if(update.senha){
-			const senhasIguais = await bcrypt.compare(update.senha,usuarioOriginal.senha);
-			if(senhasIguais){
-				throw new InvalidParametersError('Sua nova senha nao pode ser identica a anterior!');
-			}
-			update.senha= await this.criptografarSenha(update.senha);
+			// const senhasIguais = await bcrypt.compare(update.senha,usuarioOriginal.senha);
+			// if(senhasIguais){
+			// 	throw new InvalidParametersError('Sua nova senha nao pode ser identica a anterior!');
+			// }
+			// update.senha= await this.criptografarSenha(update.senha);
+
+			bcrypt.compare(update.senha,usuarioOriginal.senha,async (err,result)=>{
+				if(result){
+					update.senha= await this.criptografarSenha(update.senha);
+				}else{
+					throw new InvalidParametersError('Sua nova senha nao pode ser identica a anterior!');
+				}
+			});
 		}
 
 		await usuarioOriginal.save();

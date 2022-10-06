@@ -2,18 +2,16 @@ const NotAuthorizedError = require('../../errors/NotAuthorizedError');
 const userRoles=require('../domains/usuarios/constants/userRoles');
 
 
-function checkRole (cargo){
-	return (req,res,next)=>{
-		console.log(req.cookies['jwt']);
+function checkRole (req,res,next){
+	console.log(req.cookies['jwt']);
 
-		if(req.user.cargo!=userRoles.admin){
-			throw new NotAuthorizedError('Voce nao tem permissao para acessar esse recurso');
-		}
-		else{
-			console.log('user pode acessar!!!');
-		}
-		next();
+	if(req.user.cargo!=userRoles.admin){
+		throw new NotAuthorizedError('Voce nao tem permissao para acessar esse recurso');
 	}
+	else{
+		console.log('user pode acessar!!!');
+	}
+	next();
 }
 
 module.exports=checkRole;

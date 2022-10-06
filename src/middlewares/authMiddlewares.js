@@ -41,9 +41,9 @@ function generateJWT(user, res){
 	};
  
 	//cria o token jwt com os seguintes parametros:
-	const token = jwt.sign({user: body}, //objeto para ser colocado no payload, definido acima
-		process.env.SECRET_KEY, //chave secreta para criptografia
-		{expiresIn: process.env.JWT_EXPIRATION}); //data de expiracao do token
+	const token = jwt.sign(JSON.stringify({user: body}), //objeto para ser colocado no payload, definido acima
+		process.env.SECRET_KEY.toString(), //chave secreta para criptografia
+		JSON.stringify({expiresIn: process.env.JWT_EXPIRATION})); //data de expiracao do token
 	
 	//envia o cookie ao usuario com o nome 'jwt', e as opcoes de seguranca definidas
 	res.cookie('jwt', token, {

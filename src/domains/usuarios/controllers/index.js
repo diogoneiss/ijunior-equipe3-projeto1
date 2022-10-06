@@ -37,7 +37,7 @@ router.put('/:id', authMiddleware, checkRole, async (req, res, next) => {
 	const id=req?.params.id;
 	const usuarioUpdate=req?.body;
 	try {
-		await UsuarioService.alteracao(usuarioUpdate, id);
+		await UsuarioService.alteracao(usuarioUpdate, id, req.user);
 		res.status(201).send('Usuario alterado com sucesso');
 	} catch (error) {
 		next(error);
