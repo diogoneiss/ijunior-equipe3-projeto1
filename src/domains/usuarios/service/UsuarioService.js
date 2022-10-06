@@ -72,11 +72,10 @@ class UsuarioService {
 			// update.senha= await this.criptografarSenha(update.senha);
 
 			bcrypt.compare(update.senha,usuarioOriginal.senha,async (err,result)=>{
-				if(result){
-					update.senha= await this.criptografarSenha(update.senha);
-				}else{
+				if(err){
 					throw new InvalidParametersError('Sua nova senha nao pode ser identica a anterior!');
 				}
+				update.senha= await this.criptografarSenha(update.senha);
 			});
 		}
 

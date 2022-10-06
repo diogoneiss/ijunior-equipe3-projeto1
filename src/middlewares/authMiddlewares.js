@@ -16,10 +16,12 @@ function authMiddleware (req,res,next){
 		};
 
 		if(token){
-			const decoded= jwt.verify(token, process.env.SECRET_KEY);
-			req.user = decoded.user;
-		}else{
-			throw new NotAuthorizedError('Voce precisa estar logado para realizar essa acao!');
+			jwt.verify(token, process.env.SECRET_KEY,(err,decoded)=>{
+				if(err){
+					throw new NotAuthorizedError('Voce precisa estar logado para realizar essa acao!');
+				}
+				req.user = decoded.user;
+			});
 		}
 		next();
 
@@ -32,6 +34,28 @@ function authMiddleware (req,res,next){
 	// checkRole(req,res,next);
 }
 
+async function loginMiddleware(req, res, next){
+	try {
+		const user=Usuario.findOne({where: {email: req.body.email}});
+		if(!user){
+			throw new NotAuthorizedError('Email e/ou senha incorretos!');
+		} else{
+			bcrypt.compare(req.body.senha, user.senha, (err, result)=>{
+				if(err){
+					throw new NotAuthorizedError('Email e/ou senha incorretos! 2');
+				}
+				generateJWT(user, res);
+			});
+		}
+		
+
+		next();
+
+	} catch (error) {
+		next(error);
+	}
+}
+
 function generateJWT(user, res){
 	//no cookie vamos passar o id, email e cargo do usuario
 	const body={
@@ -41,9 +65,9 @@ function generateJWT(user, res){
 	};
  
 	//cria o token jwt com os seguintes parametros:
-	const token = jwt.sign(JSON.stringify({user: body}), //objeto para ser colocado no payload, definido acima
-		process.env.SECRET_KEY.toString(), //chave secreta para criptografia
-		JSON.stringify({expiresIn: process.env.JWT_EXPIRATION})); //data de expiracao do token
+	const token = jwt.sign({user: body}, //objeto para ser colocado no payload, definido acima
+		process.env.SECRET_KEY, //chave secreta para criptografia
+		{expiresIn: process.env.JWT_EXPIRATION}); //data de expiracao do token
 	
 	//envia o cookie ao usuario com o nome 'jwt', e as opcoes de seguranca definidas
 	res.cookie('jwt', token, {
@@ -53,27 +77,6 @@ function generateJWT(user, res){
 
 	res.status(201).send('Usuario logado com sucesso!');
 
-}
-
-async function loginMiddleware(req, res, next){
-	try {
-		const user=Usuario.findOne({where: {email: req.body.email}});
-		if(!user){
-			throw new NotAuthorizedError('Email e/ou senha incorretos!');
-		} else{
-			const senhasIguais=await bcrypt.compare(req.body.senha, user.senha);
-			if(!senhasIguais){
-				throw new NotAuthorizedError('Email e/ou senha incorretos!');
-			}
-		}
-
-		generateJWT(user, res);
-
-		next();
-
-	} catch (error) {
-		next(error);
-	}
 }
 
 async function notLoggedIn(req, res, next){
