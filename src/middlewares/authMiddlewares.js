@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt= require('bcrypt');
 const NotAuthorizedError = require('../../errors/NotAuthorizedError');
 const Usuario = require('../domains/usuarios/models/Usuario');
+const userRoles=require('../domains/usuarios/constants/userRoles');
 
 
 function authMiddleware (req,res,next){
@@ -42,7 +43,7 @@ async function loginMiddleware(req, res, next){
 		} else{
 			const comparaSenha = await bcrypt.compare(req.body.senha, user.senha);
 			if(!comparaSenha){
-				throw new NotAuthorizedError('Email e/ou senha incorretos! 2');
+				throw new NotAuthorizedError('Email e/ou senha incorretos!');
 			}
 			generateJWT(user, res);
 		};
@@ -103,4 +104,15 @@ async function logoutMiddleware(req, res, next){
 	}
 }
 
-module.exports={authMiddleware, notLoggedIn, loginMiddleware, logoutMiddleware};
+function checkRole (req,res,next){
+	if(req.user.cargo!=userRoles.admin){
+		throw new NotAuthorizedError('Voce nao tem permissao para acessar esse recurso');
+	}
+	else{
+		console.log('user pode acessar!!!');
+	}
+	next();
+}
+
+
+module.exports={authMiddleware, notLoggedIn, loginMiddleware, logoutMiddleware, checkRole};

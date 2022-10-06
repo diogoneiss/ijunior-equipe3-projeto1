@@ -1,15 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const MusicaService = require('../service/MusicaService');
-const Musica = require('../models/Musica');
 const {authMiddleware, 
-		notLoggedIn,
-		loginMiddleware}=require('../../../middlewares/authMiddlewares');
-const checkRole = require('../../../middlewares/checkRole');
+	checkRole}=require('../../../middlewares/authMiddlewares');
 
 
 //Envia a lista de musicas
-router.get('/', async (req, res, next) => {
+router.get('/', authMiddleware, async (req, res, next) => {
 	try {
 		const listaMusicas = await MusicaService.listaTodos();
 		res.status(200).send(listaMusicas);
@@ -39,7 +36,7 @@ router.post('/', authMiddleware, async(req, res, next) => {
 });
 
 //Remove uma musica usando como chave principal seu id
-router.delete('/:id', authMiddleware, async(req, res, next) => {
+router.delete('/:id', authMiddleware, checkRole,async(req, res, next) => {
 	try {
 		const id=req?.params.id;
 		await MusicaService.delecao(id);
@@ -50,7 +47,7 @@ router.delete('/:id', authMiddleware, async(req, res, next) => {
 });
 
 //Altera uma musica, usando como chave principal seu id
-router.put('/:id', authMiddleware, async(req, res, next) => {
+router.put('/:id', authMiddleware,checkRole, async(req, res, next) => {
 	try {
 		const updateMusica=req?.body;
 		const id=req?.params.id;

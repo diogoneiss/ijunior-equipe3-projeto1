@@ -1,10 +1,7 @@
 const router = require('express').Router();
-const Artista = require('../models/Artista');
 const ArtistaService=require('../services/artistaService');
 const {authMiddleware, 
-	notLoggedIn,
-	loginMiddleware}=require('../../../middlewares/authMiddlewares');
-const checkRole = require('../../../middlewares/checkRole');
+	checkRole}=require('../../../middlewares/authMiddlewares');
 
 router.get('/', async(req, res, next) => {
 	try {
@@ -25,7 +22,7 @@ router.post('/', authMiddleware, async(req, res, next) => {
 	}
 });
 
-router.put('/:id',authMiddleware,async (req, res, next) => {
+router.put('/:id',authMiddleware, checkRole, async (req, res, next) => {
 	const id=req?.params.id;
 	const artistaUpdate=req?.body;
 	try {
@@ -36,7 +33,7 @@ router.put('/:id',authMiddleware,async (req, res, next) => {
 	}
 });
 
-router.delete('/:id',authMiddleware,async (req, res, next) => {
+router.delete('/:id',authMiddleware, checkRole, async (req, res, next) => {
 	const id=req?.params.id;
 	try {
 		ArtistaService.delecao(id);

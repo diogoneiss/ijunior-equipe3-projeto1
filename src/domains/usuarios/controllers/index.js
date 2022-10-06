@@ -1,11 +1,10 @@
 const router = require('express').Router();
-const Usuario = require('../models/Usuario');
 const UsuarioService = require('../service/UsuarioService');
 const {authMiddleware, 
 	notLoggedIn, 
 	loginMiddleware,
-	logoutMiddleware}=require('../../../middlewares/authMiddlewares');
-const checkRole=require('../../../middlewares/checkRole');
+	logoutMiddleware,
+	checkRole}=require('../../../middlewares/authMiddlewares');
 
 router.post('/login',notLoggedIn, loginMiddleware);
 router.post('/logout',logoutMiddleware);
@@ -17,7 +16,6 @@ router.get('/', authMiddleware, async (req, res, next) => {
 	} catch (error) {
 		next(error);
 	}
-
 
 });
 
@@ -45,7 +43,7 @@ router.put('/:id', authMiddleware, checkRole, async (req, res, next) => {
 });
 
 
-router.delete('/:id', authMiddleware, async (req, res, next) => {
+router.delete('/:id', authMiddleware, checkRole, async (req, res, next) => {
 	const id=req?.params.id;
 	try {
 		await UsuarioService.delecao(id);
