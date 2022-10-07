@@ -29,11 +29,5 @@ const Usuario = sequelize.define('Usuario', {
 
 
 
-Usuario.sync({ alter: true, force: false }).then(() => {
-	console.log('tabela de usuarios foi (re)criada');
-})
-	.catch((error) => {
-		console.log(error);
-	});
 
 module.exports = Usuario;

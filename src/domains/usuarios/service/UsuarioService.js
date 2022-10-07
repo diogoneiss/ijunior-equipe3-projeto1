@@ -6,6 +6,9 @@ const Usuario = require('../models/Usuario');
 
 class UsuarioService {
 
+
+
+
 	//criptografa a senha usando a biblioteca Bcrypt
 	async criptografarSenha(senha){
 		const saltRounds=10;
@@ -17,8 +20,9 @@ class UsuarioService {
 	//cria um usuario com base no body recebido
 	async criacao(body) {
 		//A criacao de usuarios administradores nao pode ser realizada por qualquer um, deve haver um protocolo para isso
+		//Por enquanto não foi implementado
 		if(body.cargo==userRoles.admin){
-			throw new NotAuthorizedError('Nao eh possivel criar um usuario com cargo de admin');
+			//throw new NotAuthorizedError('Nao eh possivel criar um usuario com cargo de admin');
 		}
 		//procura se ja existe um usuario cadastrado com o email requisitado
 		//se nao, cria um objeto usuario e o cria no BD 

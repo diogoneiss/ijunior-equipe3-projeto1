@@ -47,11 +47,6 @@ Usuario.belongsToMany(Musica,{
 	through: 'MusicaUsuario'
 });
 
-Musica.sync({ force: false, alter: true }).then(() => {
-	console.log('a tabela de musicas foi (re)criada');
-})
-	.catch((error) => {
-		console.log(error);
-	});
+
 
 module.exports = Musica;

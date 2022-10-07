@@ -115,4 +115,4 @@ function checkRole (req,res,next){
 }
 
 
-module.exports={authMiddleware, notLoggedIn, loginMiddleware, logoutMiddleware, checkRole};
+module.exports={authMiddleware, notLoggedIn, loginMiddleware, logoutMiddleware, checkRole, generateJWT};

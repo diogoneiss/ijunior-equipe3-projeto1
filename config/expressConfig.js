@@ -20,20 +20,23 @@ app.use(express.urlencoded({
 }));
 
 
-// if swagger file not found throw error
-try {
-	const swaggerDocument = require('../swagger_output.json');
 
-	app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-}
-catch (err) {
-	console.log('Swagger file not found');
-	console.log('You can generate it by running \'npm run doc\' or \'node swagger.js\'');
-	console.log(err.message);
-	throw Error('Swagger file not found');
-}
+// se estamos em ambiente de teste não precisa carregar o swagger
+if( process.env.NODE_ENV !== 'test'){
+	try {
+		const swaggerDocument = require('../swagger_output.json');
 
-console.log('Swagger route created! enter http://localhost:3030/api-docs/ to see the documentation');
+		app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+		console.log('Swagger route created! enter http://localhost:3030/api-docs/ to see the documentation');
+
+	}
+	catch (err) {
+		console.log('Swagger file not found');
+		console.log('You can generate it by running \'npm run doc\' or \'node swagger.js\'');
+		console.log(err.message);
+		throw Error('Swagger file not found');
+	}
+}
 
 const musicaRouter = require('../src/domains/musicas/controllers/index');
 app.use('/api/musica', musicaRouter);
