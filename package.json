@@ -6,8 +6,9 @@
   "scripts": {
     "test": "NODE_ENV=test jest --runInBand",
     "doc": "node ./scripts/swagger.js",
-    "createTables": "node ./scripts/createTables.js"
-
+    "createTables": "node ./scripts/createTables.js",
+    "fix": "eslint --fix .",
+    "bcrypt": "npm rebuild bcrypt --build-from-source"
   },
   "author": "",
   "license": "ISC",

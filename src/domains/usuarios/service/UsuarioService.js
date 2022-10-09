@@ -6,13 +6,13 @@ const Usuario = require('../models/Usuario');
 
 class UsuarioService {
 
-
-
-
 	//criptografa a senha usando a biblioteca Bcrypt
 	async criptografarSenha(senha){
 		const saltRounds=10;
-		const senhaCriptografada= await bcrypt.hash(senha, saltRounds);
+		if(senha === undefined){
+			throw Error('Senha não informada');
+		}
+		const senhaCriptografada = await bcrypt.hash(senha, saltRounds);
 		return senhaCriptografada;
 	}
 
@@ -20,9 +20,12 @@ class UsuarioService {
 	//cria um usuario com base no body recebido
 	async criacao(body) {
 		//A criacao de usuarios administradores nao pode ser realizada por qualquer um, deve haver um protocolo para isso
-		//Por enquanto não foi implementado
 		if(body.cargo==userRoles.admin){
-			//throw new NotAuthorizedError('Nao eh possivel criar um usuario com cargo de admin');
+			//verificar se a requisicao passou no body a senha de acesso total
+			const senhaAcessoTotal = process.env.SENHA_ACESSO_TOTAL;
+			if(body?.senhaAcessoTotal!=senhaAcessoTotal){
+				throw new NotAuthorizedError('Nao eh possivel criar um usuario com cargo de admin sem a senha de acesso total. Caso a tenha, passe ela no body da requisicao como \'senhaAcessoTotal: \'');
+			}
 		}
 		//procura se ja existe um usuario cadastrado com o email requisitado
 		//se nao, cria um objeto usuario e o cria no BD 
@@ -36,8 +39,8 @@ class UsuarioService {
 				senha: body.senha,
 				cargo: body.cargo
 			};
-			user.senha = await this.criptografarSenha(body.senha);
-
+			const senhaHasheada = await this.criptografarSenha(body.senha);
+			user.senha = senhaHasheada;
 			await Usuario.create(user);
 		}
 		//criptografa a senha antes de manda-la ao banco de dados

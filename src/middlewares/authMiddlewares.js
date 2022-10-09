@@ -35,6 +35,8 @@ function authMiddleware (req,res,next){
 	}
 }
 
+
+
 async function loginMiddleware(req, res, next){
 	try {
 		const user= await Usuario.findOne({where: {email: req.body.email}});
@@ -45,7 +47,7 @@ async function loginMiddleware(req, res, next){
 			if(!comparaSenha){
 				throw new NotAuthorizedError('Email e/ou senha incorretos!');
 			}
-			generateJWT(user, res);
+			generateJwtMiddleware(user, res);
 		};
 		
 	
@@ -56,12 +58,18 @@ async function loginMiddleware(req, res, next){
 	}
 }
 
-function generateJWT(user, res){
-	//no cookie vamos passar o id, email e cargo do usuario
+
+function createJwt(id, cargo, email){
+/**
+ * @summary Cria um token jwt com base no id do usuario, seu cargo e seu email
+ * @param {number} id - id do usuario
+ * @param {string} cargo - cargo do usuario, pode ser admin ou user
+ * @param {string} email - email do usuario
+ */	
 	const body={
-		id: user.id,
-		cargo: user.cargo,
-		email: user.email
+		id: id,
+		cargo: cargo,
+		email: email
 	};
  
 	//cria o token jwt com os seguintes parametros:
@@ -69,6 +77,13 @@ function generateJWT(user, res){
 		process.env.SECRET_KEY, //chave secreta para criptografia
 		{expiresIn: process.env.JWT_EXPIRATION}); //data de expiracao do token
 	
+	return token;
+}
+
+function generateJwtMiddleware(user, res){
+	
+	const token = createJwt(user.id, user.cargo, user.email);
+
 	//envia o cookie ao usuario com o nome 'jwt', e as opcoes de seguranca definidas
 	res.cookie('jwt', token, {
 		httpOnly: true,
@@ -115,4 +130,4 @@ function checkRole (req,res,next){
 }
 
 
-module.exports={authMiddleware, notLoggedIn, loginMiddleware, logoutMiddleware, checkRole, generateJWT};
+module.exports={authMiddleware, notLoggedIn, loginMiddleware, logoutMiddleware, checkRole, generateJwtMiddleware, createJwt};

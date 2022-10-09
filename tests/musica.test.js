@@ -3,16 +3,13 @@ const request = require('supertest');
 const app = require('../config/expressConfig');
 const supertest = require('supertest');
 
-//import jest globals
 
-const {defaults} = require('jest-config');
+let musicaRouter = '/api/musica';
 
-let userRoute = '/api/usuarios';
-
-describe('User related tests', () => {
+describe('Musica related tests', () => {
 	test('GET / without auth', (done) => {
 		request(app)
-			.get(userRoute)
+			.get(musicaRouter)
 			.expect('Content-Type', /json/)
 			.expect(403)
 			.end((err, res) => {
@@ -24,10 +21,10 @@ describe('User related tests', () => {
 	test('GET / with auth', (done) => {
 
 		request(app)
-			.get(userRoute)
+			.get(musicaRouter)
 			.set('Cookie', [`jwt=${sampleAdmin.jwt}`])
 			.expect('Content-Type', /json/)
-			.expect(201)
+			.expect(200)
 			.expect((res) => {
 				res.body.length >= 1;
 			})
