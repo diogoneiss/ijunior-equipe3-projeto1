@@ -26,7 +26,7 @@ router.post('/', authMiddleware, async(req, res, next) => {
 		};
 
 		await MusicaService.criacao(newMusica);
-		res.status(201).json('Musica adicionada com sucesso!');
+		res.status(201).send('Musica adicionada com sucesso!');
 	}
 	catch (error) {
 		next(error);

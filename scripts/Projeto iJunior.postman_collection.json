@@ -1,12 +1,85 @@
 {
 	"info": {
-		"_postman_id": "5fe5b5ad-dc94-4b8c-b3ca-0a9dd899569a",
+		"_postman_id": "d901b1b9-d965-48d4-80ee-5c0f5bcd312e",
 		"name": "Projeto iJunior",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23180633"
 	},
 	"item": [
 		{
 			"name": "Apagar musica",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3030/api/musica/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3030",
+					"path": [
+						"api",
+						"musica",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Apagar artista",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3030/api/musica/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3030",
+					"path": [
+						"api",
+						"musica",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Apagar usuario",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -106,6 +179,26 @@
 			"response": []
 		},
 		{
+			"name": "Recuperar artistas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3030/api/artistas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3030",
+					"path": [
+						"api",
+						"artistas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Criar usuario",
 			"request": {
 				"method": "POST",
@@ -129,6 +222,64 @@
 					"path": [
 						"api",
 						"usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Criar musica",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\t\t\"titulo\": \"teste\", \r\n\t\t\t\"foto\": \"deveria ser base64\",\r\n\t\t\t\"categoria\": \"teste\",\r\n\t\t\t\"ArtistaID\": 1\r\n\t\t}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3030/api/musica",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3030",
+					"path": [
+						"api",
+						"musica"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Criar artista",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\t\t\"nome\": \"teste\", \r\n\t\t\t\"foto\": \"deveria ser base64\",\r\n\t\t\t\"nacionalidade\": \"teste\"\r\n\t\t}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3030/api/artistas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3030",
+					"path": [
+						"api",
+						"artistas"
 					]
 				}
 			},
@@ -224,21 +375,41 @@
 			"response": []
 		},
 		{
-			"name": "Criar musica",
+			"name": "Alterar usuario",
 			"request": {
-				"method": "POST",
+				"method": "PUT",
 				"header": [],
 				"body": {
-					"mode": "raw",
-					"raw": "{\r\n\t\t\t\"titulo\": \"teste\", \r\n\t\t\t\"foto\": \"deveria ser base64\",\r\n\t\t\t\"categoria\": \"teste\",\r\n\t\t\t\"ArtistaID\": 1\r\n\t\t}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nome",
+							"value": "nomeAlterado",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "email",
+							"value": "emailAlterado",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "senha",
+							"value": "senhaAlterada",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "cargo",
+							"value": "cargoAlterado",
+							"type": "text",
+							"disabled": true
 						}
-					}
+					]
 				},
 				"url": {
-					"raw": "http://localhost:3030/api/musica",
+					"raw": "http://localhost:3030/api/usuarios/:id",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -246,28 +417,55 @@
 					"port": "3030",
 					"path": [
 						"api",
-						"musica"
+						"usuarios",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Criar artista",
+			"name": "Alterar artista",
 			"request": {
-				"method": "POST",
+				"method": "PUT",
 				"header": [],
 				"body": {
-					"mode": "raw",
-					"raw": "{\r\n\t\t\t\"nome\": \"teste\", \r\n\t\t\t\"foto\": \"deveria ser base64\",\r\n\t\t\t\"nacionalidade\": \"teste\"\r\n\t\t}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nome",
+							"value": "nomeAlterado",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "email",
+							"value": "emailAlterado",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "senha",
+							"value": "senhaAlterada",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "cargo",
+							"value": "cargoAlterado",
+							"type": "text",
+							"disabled": true
 						}
-					}
+					]
 				},
 				"url": {
-					"raw": "http://localhost:3030/api/artistas",
+					"raw": "http://localhost:3030/api/usuarios/:id",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -275,7 +473,70 @@
 					"port": "3030",
 					"path": [
 						"api",
-						"artistas"
+						"usuarios",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alterar musica",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nome",
+							"value": "nomeAlterado",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "email",
+							"value": "emailAlterado",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "senha",
+							"value": "senhaAlterada",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "cargo",
+							"value": "cargoAlterado",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3030/api/usuarios/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3030",
+					"path": [
+						"api",
+						"usuarios",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
 					]
 				}
 			},

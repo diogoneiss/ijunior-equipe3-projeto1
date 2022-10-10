@@ -12,7 +12,7 @@ router.post('/logout',logoutMiddleware);
 router.get('/', authMiddleware, async (req, res, next) => {
 	try {
 		const allUsers = await UsuarioService.listarTodos();
-		res.status(200).json(allUsers);
+		res.status(200).send(allUsers);
 	} catch (error) {
 		next(error);
 	}
@@ -24,7 +24,7 @@ router.post('/', async (req, res, next) => {
 	const body = req.body;
 	try {
 		await UsuarioService.criacao(body);
-		res.status(201).json('Usuario criado com sucesso!');
+		res.status(201).send('Usuario criado com sucesso!');
 	} catch (error) {
 		next(error);
 	}
