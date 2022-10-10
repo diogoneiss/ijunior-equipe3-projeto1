@@ -12,7 +12,46 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\t\"nome\": \"Teste\"\r\n}",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3030/api/musica/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3030",
+					"path": [
+						"api",
+						"musica",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Recuperar musicas",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -73,7 +112,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\t\"nome\": \"Diogo\",\r\n\t\"email\": \"Diogo@teste\",\r\n\t\"cargo\": \"admin\"\r\n}",
+					"raw": "{\r\n\t\"nome\": \"Diogo\",\r\n\t\"senha\": \"123456\",\r\n\t\"email\": \"diogo@teste1.com\",\r\n\t\"cargo\": \"admin\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -94,6 +133,173 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Criar usuario admin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"nome\": \"Diogo\",\r\n\t\"senha\": \"123456\",\r\n\t\"email\": \"diogo@3.com\",\r\n\t\"cargo\": \"admin\",\r\n\t\"senhaAcessoTotal\": 123456\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3030/api/usuarios",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3030",
+					"path": [
+						"api",
+						"usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fazer login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"senha\": \"123456\",\r\n\t\"email\": \"diogo@teste1.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3030/api/usuarios/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3030",
+					"path": [
+						"api",
+						"usuarios",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fazer logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"senha\": \"123456\",\r\n\t\"email\": \"diogo@teste.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3030/api/usuarios/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3030",
+					"path": [
+						"api",
+						"usuarios",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Criar musica",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\t\t\"titulo\": \"teste\", \r\n\t\t\t\"foto\": \"deveria ser base64\",\r\n\t\t\t\"categoria\": \"teste\",\r\n\t\t\t\"ArtistaID\": 1\r\n\t\t}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3030/api/musica",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3030",
+					"path": [
+						"api",
+						"musica"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Criar artista",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\t\t\"nome\": \"teste\", \r\n\t\t\t\"foto\": \"deveria ser base64\",\r\n\t\t\t\"nacionalidade\": \"teste\"\r\n\t\t}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3030/api/artistas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3030",
+					"path": [
+						"api",
+						"artistas"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
