@@ -12,7 +12,7 @@ router.post('/logout',logoutMiddleware);
 router.get('/', authMiddleware, async (req, res, next) => {
 	try {
 		const allUsers = await UsuarioService.listarTodos();
-		res.status(201).send(allUsers);
+		res.status(200).json(allUsers);
 	} catch (error) {
 		next(error);
 	}
@@ -36,7 +36,7 @@ router.put('/:id', authMiddleware, checkRole, async (req, res, next) => {
 	const usuarioUpdate=req?.body;
 	try {
 		await UsuarioService.alteracao(usuarioUpdate, id, req.user);
-		res.status(201).send('Usuario alterado com sucesso');
+		res.status(204).send('Usuario alterado com sucesso');
 	} catch (error) {
 		next(error);
 	}
@@ -47,7 +47,7 @@ router.delete('/:id', authMiddleware, checkRole, async (req, res, next) => {
 	const id=req?.params.id;
 	try {
 		await UsuarioService.delecao(id);
-		res.status(201).send('Usuario deletado com sucesso!');
+		res.status(204).send('Usuario deletado com sucesso!');
 	} catch (error) {
 		next(error);
 	}

@@ -27,7 +27,7 @@ router.put('/:id',authMiddleware, checkRole, async (req, res, next) => {
 	const artistaUpdate=req?.body;
 	try {
 		await ArtistaService.alteracao(artistaUpdate, id);
-		res.status(201).send('Artista alterado com sucesso');
+		res.status(204).send('Artista alterado com sucesso');
 	} catch (error) {
 		next(error);
 	}
@@ -37,7 +37,7 @@ router.delete('/:id',authMiddleware, checkRole, async (req, res, next) => {
 	const id=req?.params.id;
 	try {
 		ArtistaService.delecao(id);
-		res.status(201).send('Artista deletado com sucesso!');
+		res.status(204).send('Artista deletado com sucesso!');
 	} catch (error) {
 		next(error);
 	}

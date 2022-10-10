@@ -26,7 +26,7 @@ router.post('/', authMiddleware, async(req, res, next) => {
 		};
 
 		await MusicaService.criacao(newMusica);
-		res.status(200).json('musica adicionada com sucesso!');
+		res.status(201).json('Musica adicionada com sucesso!');
 	}
 	catch (error) {
 		next(error);
@@ -40,7 +40,7 @@ router.delete('/:id', authMiddleware, checkRole,async(req, res, next) => {
 	try {
 		const id=req?.params.id;
 		await MusicaService.delecao(id);
-		res.status(200).send('Musica deletada com sucesso!');
+		res.status(204).send('Musica deletada com sucesso!');
 	} catch (error) {
 		next(error);
 	}
@@ -52,7 +52,7 @@ router.put('/:id', authMiddleware,checkRole, async(req, res, next) => {
 		const updateMusica=req?.body;
 		const id=req?.params.id;
 		await MusicaService.alteracao(updateMusica,id);
-		res.status(201).send('Musica alterada com sucesso!');
+		res.status(204).send('Musica alterada com sucesso!');
 	} catch (error) {
 		next(error);
 	}

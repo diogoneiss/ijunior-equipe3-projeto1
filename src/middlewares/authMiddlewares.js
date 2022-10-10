@@ -90,7 +90,7 @@ function generateJwtMiddleware(user, res){
 		secure: process.env.NODE_ENV !== 'development'
 	});
 
-	res.status(201).send('Usuario logado com sucesso!');
+	res.status(200).send('Usuario logado com sucesso!');
 
 }
 
